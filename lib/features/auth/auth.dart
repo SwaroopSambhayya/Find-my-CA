@@ -1,5 +1,7 @@
-import 'package:find_my_ca/features/auth/login/login.dart';
+//import 'package:find_my_ca/features/auth/login/login.dart';
 import 'package:find_my_ca/features/auth/register/register.dart';
+import 'package:find_my_ca/shared/models/profile.dart';
+import 'package:find_my_ca/shared/widgets/profile.dart';
 import 'package:flutter/material.dart';
 
 class Auth extends StatefulWidget {
@@ -18,9 +20,10 @@ class _AuthState extends State<Auth> {
   void initState() {
     _controller = PageController();
     authWidgets = [
-      Login(
+      /* Login(
         pageController: _controller,
-      ),
+      ), */
+      const UserProfile(profile: Profile()),
       Register(pageController: _controller)
     ];
     super.initState();

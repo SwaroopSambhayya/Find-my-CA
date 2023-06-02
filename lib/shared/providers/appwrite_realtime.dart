@@ -9,13 +9,12 @@ final appWriteRealTimeProvider = Provider<Realtime>((ref) {
   return Realtime(client);
 });
 
-final userSessonProvider = StreamProvider<RealtimeMessage>((ref) {
+final userSessionProvider = Provider<RealtimeSubscription>((ref) {
   Realtime realTime = ref.read(appWriteRealTimeProvider);
-  final subscription = realTime.subscribe(['account']);
-  subscription.stream.listen((event) {
-    print(event.events);
-  });
-  return subscription.stream;
+  final subscription = realTime.subscribe([
+    'account',
+  ]);
+  return subscription;
 });
 
 final authStateProvider = FutureProvider<User?>((ref) async {

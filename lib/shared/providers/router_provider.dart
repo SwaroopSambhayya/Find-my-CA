@@ -9,13 +9,16 @@ import 'package:go_router/go_router.dart';
 final _key = GlobalKey<NavigatorState>();
 
 final routeProvider = Provider<GoRouter>((ref) {
-  final sessionProvider = ref.watch(userSessonProvider);
+  //final sessionProvider = ref.watch(userSessionProvider);
   final authState = ref.watch(authStateProvider);
-  sessionProvider.whenData(
-    (value) => ref.read(authStateListener.notifier).state = value.events,
-  );
+  // sessionProvider.stream.listen((event) {
+  //   print(event);
+  // });
+  // // sessionProvider.whenData(
+  //   (value) => ref.read(authStateListener.notifier).state = value.events,
+  // );
   final authListener = ref.watch(authStateListener);
-  print(authListener);
+  // print(authListener);
   return GoRouter(
     initialLocation: '/login',
     navigatorKey: _key,
@@ -44,13 +47,10 @@ final routeProvider = Provider<GoRouter>((ref) {
           })
     ],
     redirect: (context, state) {
-      if (authListener.contains('users.*.sessions.*.delete')) {
-        return '/login';
-      }
-
       if (authListener.contains('users.*.sessions.*.create')) {
         return '/';
       }
+
       if (authState.isLoading) {
         return null;
       }

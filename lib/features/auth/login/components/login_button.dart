@@ -1,7 +1,7 @@
-import 'package:appwrite/models.dart';
 import 'package:find_my_ca/features/auth/login/login_provider.dart';
 import 'package:find_my_ca/features/auth/providers/password_provider.dart';
 import 'package:find_my_ca/shared/extensions.dart';
+import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +28,9 @@ class LoginButton extends ConsumerWidget {
               content: Text('Login Successfull'),
             ),
           );
+          ref.read(authStateListener.notifier).state = [
+            'users.*.sessions.*.create'
+          ];
         },
       );
     });

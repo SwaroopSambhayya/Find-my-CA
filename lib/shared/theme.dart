@@ -7,7 +7,9 @@ ThemeData lightThemeData = ThemeData(
     useMaterial3: true,
     primaryColor: primaryColor,
     fontFamily: 'Poppins',
-    buttonTheme: const ButtonThemeData(buttonColor: Color(0xff6C4AB6)),
+    buttonTheme: const ButtonThemeData(
+      buttonColor: Color(0xff6C4AB6),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: secondaryColor,
@@ -20,6 +22,7 @@ ThemeData lightThemeData = ThemeData(
     cardTheme: CardTheme(
       color: secondaryColor,
     ),
+    dialogBackgroundColor: backgroundColor,
     canvasColor: backgroundColor,
     scaffoldBackgroundColor: backgroundColor,
     cardColor: secondaryColor);

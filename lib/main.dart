@@ -1,24 +1,30 @@
-import 'package:find_my_ca/shared/route_config.dart';
+import 'package:find_my_ca/shared/providers/router_provider.dart';
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp.router(
-        theme: lightThemeData,
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
-      ),
+    GoRouter router = ref.watch(routeProvider);
+    return MaterialApp.router(
+      theme: lightThemeData,
+      debugShowCheckedModeBanner: false,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }

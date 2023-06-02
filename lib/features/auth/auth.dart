@@ -1,17 +1,18 @@
 import 'package:find_my_ca/features/auth/login/login.dart';
 import 'package:find_my_ca/features/auth/register/register.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Auth extends StatefulWidget {
+class Auth extends ConsumerStatefulWidget {
   const Auth({
     super.key,
   });
 
   @override
-  State<Auth> createState() => _AuthState();
+  ConsumerState<Auth> createState() => _AuthState();
 }
 
-class _AuthState extends State<Auth> {
+class _AuthState extends ConsumerState<Auth> {
   late List<Widget> authWidgets;
   late PageController _controller;
   @override

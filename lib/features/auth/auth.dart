@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Auth extends ConsumerStatefulWidget {
+  static String get routeName => '/login';
+  static String get routeLocation => 'login';
+
   const Auth({
     super.key,
   });

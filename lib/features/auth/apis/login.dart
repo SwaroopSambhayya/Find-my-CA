@@ -4,3 +4,7 @@ import 'package:appwrite/models.dart';
 Future<Session> login(String email, String password, Account account) async {
   return await account.createEmailSession(email: email, password: password);
 }
+
+Future logout(Account account) async {
+  return await account.deleteSession(sessionId: 'current');
+}

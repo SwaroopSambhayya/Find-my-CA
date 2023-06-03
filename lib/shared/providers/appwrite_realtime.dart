@@ -1,6 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
-import 'package:find_my_ca/shared/providers/account_provider.dart';
 import 'package:find_my_ca/shared/providers/appwrite_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,17 +7,14 @@ final appWriteRealTimeProvider = Provider<Realtime>((ref) {
   return Realtime(client);
 });
 
-final userSessionProvider = Provider<RealtimeSubscription>((ref) {
+final userSessionProvider = StateProvider<List<String>>((ref) {
   Realtime realTime = ref.read(appWriteRealTimeProvider);
-  final subscription = realTime.subscribe([
-    'account',
-  ]);
-  return subscription;
-});
-
-final authStateProvider = FutureProvider<User?>((ref) async {
-  User? user = await ref.read(accountProvider).get();
-  return user;
+  List<String> events = [];
+  final subscription = realTime.subscribe(['account']);
+  subscription.stream.listen((event) {
+    events = event.events;
+  });
+  return events;
 });
 
 final authStateListener = StateProvider<List<String>>((ref) => []);

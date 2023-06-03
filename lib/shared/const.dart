@@ -44,3 +44,7 @@ String userAlreadyRegistered =
     'A user with the same id, email, or phone already exists';
 
 String rateLimitExceeded = 'Oops! sorry for inconvinience we will be back soon';
+
+String loginSucess = 'Login Sucessful';
+
+String logoutSuccess = 'Logout Successful';

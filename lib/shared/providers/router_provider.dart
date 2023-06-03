@@ -1,5 +1,6 @@
 import 'package:appwrite/models.dart';
 import 'package:find_my_ca/features/auth/auth.dart';
+import 'package:find_my_ca/features/auth/login/login_provider.dart';
 import 'package:find_my_ca/features/client/home/home.dart';
 import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
 import 'package:flutter/material.dart';
@@ -9,31 +10,23 @@ import 'package:go_router/go_router.dart';
 final _key = GlobalKey<NavigatorState>();
 
 final routeProvider = Provider<GoRouter>((ref) {
-  //final sessionProvider = ref.watch(userSessionProvider);
   final authState = ref.watch(authStateProvider);
-  // sessionProvider.stream.listen((event) {
-  //   print(event);
-  // });
-  // // sessionProvider.whenData(
-  //   (value) => ref.read(authStateListener.notifier).state = value.events,
-  // );
   final authListener = ref.watch(authStateListener);
-  // print(authListener);
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: Auth.routeLocation,
     navigatorKey: _key,
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
-        path: '/',
-        name: 'home',
+        path: Home.routeLocation,
+        name: Home.routeName,
         builder: (context, state) {
           return const Home();
         },
       ),
       GoRoute(
-          path: '/login',
-          name: 'login',
+          path: Auth.routeLocation,
+          name: Auth.routeName,
           builder: (context, state) {
             return const Auth();
           }),

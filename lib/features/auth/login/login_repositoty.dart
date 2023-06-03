@@ -16,4 +16,14 @@ class LoginAuth extends StateNotifier<AsyncValue<dynamic>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+  Future<void> logoutUser() async {
+    state = const AsyncValue.loading();
+    try {
+      var result = await logout(account);
+      state = AsyncValue.data(result);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
 }

@@ -49,6 +49,10 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to pick photo from your photo library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to take photo</string>
 
 </dict>
 </plist>

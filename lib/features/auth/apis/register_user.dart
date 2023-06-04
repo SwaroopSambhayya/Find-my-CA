@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:find_my_ca/shared/const.dart';
 import 'package:find_my_ca/shared/models/profile.dart';
-import 'package:uuid/uuid.dart';
 
 Future<User> registerNewUser(
     {required String email,
@@ -15,8 +14,7 @@ Future<User> registerNewUser(
     email: email,
     password: password,
   );
-  profile =
-      profile.copyWith(userId: user.$id, id: ID.custom(const Uuid().v1()));
+  profile = profile.copyWith(userId: user.$id);
   await createProfile(database, profile);
   return user;
 }

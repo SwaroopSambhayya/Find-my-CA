@@ -19,6 +19,7 @@ ThemeData lightThemeData = ThemeData(
     ),
     cardTheme: CardTheme(
       color: secondaryColor,
+      surfaceTintColor: secondaryColor
     ),
     canvasColor: backgroundColor,
     scaffoldBackgroundColor: backgroundColor,

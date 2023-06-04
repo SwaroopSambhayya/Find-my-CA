@@ -1,5 +1,6 @@
 import 'package:find_my_ca/shared/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Login extends StatefulWidget {
   final PageController pageController;
@@ -67,7 +68,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => context.go('/home'),
                     style:
                         Theme.of(context).elevatedButtonTheme.style!.copyWith(
                               minimumSize: MaterialStateProperty.all(

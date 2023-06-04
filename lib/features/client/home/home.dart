@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
               ),
             ),
           ),
-          LogoutButton()
+          // LogoutButton()
         ],
       ),
       body: SafeArea(

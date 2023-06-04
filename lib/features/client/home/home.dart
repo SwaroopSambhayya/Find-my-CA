@@ -1,8 +1,10 @@
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
 
-class ClientHome extends StatelessWidget {
-  const ClientHome({Key? key}) : super(key: key);
+class Home extends StatelessWidget {
+  const Home({super.key});
+  static String get routeName => 'home';
+  static String get routeLocation => '/';
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,8 @@ class ClientHome extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
             ),
-          )
+          ),
+          LogoutButton()
         ],
       ),
       body: SafeArea(

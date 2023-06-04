@@ -1,7 +1,8 @@
 import 'dart:convert';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
-import 'package:find_my_ca/shared/utils.dart';
+import 'package:find_my_ca/shared/enums.dart';
+import 'package:flutter/foundation.dart';
 
 class Profile {
   final String? id;
@@ -9,11 +10,13 @@ class Profile {
   final String? fname;
   final String? lname;
   final RoleType roletype;
-  final List<dynamic>? expertise;
-  final int? ratings;
+  final List<String>? expertise;
   final String? phone;
   final String? email;
   final String? address;
+  final String? country;
+  final String? city;
+  final String? upiId;
   final String? geoLat;
   final String? geoLong;
   final CARegistererType registererType;
@@ -28,15 +31,17 @@ class Profile {
     this.lname,
     this.roletype = RoleType.none,
     this.expertise,
-    this.ratings,
     this.phone,
     this.email,
     this.address,
+    this.upiId,
     this.geoLat,
     this.geoLong,
     this.registererType = CARegistererType.none,
     this.profileDescription,
     this.age,
+    this.country,
+    this.city,
     this.gender,
   });
 
@@ -46,8 +51,7 @@ class Profile {
         fname: data['fname'] as String?,
         lname: data['lname'] as String?,
         roletype: data['roletype'] as RoleType,
-        expertise: data['expertise'] as List<dynamic>?,
-        ratings: data['ratings'] as int?,
+        expertise: data['expertise'] as List<String>?,
         phone: data['phone'] as String?,
         email: data['email'] as String?,
         address: data['address'] as String?,
@@ -56,6 +60,9 @@ class Profile {
         registererType: data['registererType'] as CARegistererType,
         profileDescription: data['profileDescription'] as String?,
         age: data['age'] as int?,
+        country: data['country'] as String?,
+        upiId: data['upiId'] as String?,
+        city: data['city'] as String?,
         gender: data['gender'] as String?,
       );
 
@@ -64,18 +71,20 @@ class Profile {
         'userId': userId,
         'fname': fname,
         'lname': lname,
-        'roletype': roletype,
+        'roletype': describeEnum(roletype),
         'expertise': expertise,
-        'ratings': ratings,
         'phone': phone,
         'email': email,
         'address': address,
-        'geoLat': geoLat,
-        'geoLong': geoLong,
-        'registererType': registererType,
-        'profileDescription': profileDescription,
+        'geoLat': geoLat ?? "",
+        'geoLong': geoLong ?? "",
+        'registererType': describeEnum(registererType),
+        'profileDescription': profileDescription ?? "",
         'age': age,
-        'gender': gender,
+        'gender': gender ?? "",
+        'country': country,
+        'city': city,
+        'upiId': upiId
       };
 
   /// `dart:convert`
@@ -90,24 +99,25 @@ class Profile {
   /// Converts [Profile] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  Profile copyWith({
-    String? id,
-    String? userId,
-    String? fname,
-    String? lname,
-    RoleType? roletype,
-    List<dynamic>? expertise,
-    int? ratings,
-    String? phone,
-    String? email,
-    String? address,
-    String? geoLat,
-    String? geoLong,
-    CARegistererType? registererType,
-    String? profileDescription,
-    int? age,
-    String? gender,
-  }) {
+  Profile copyWith(
+      {String? id,
+      String? userId,
+      String? fname,
+      String? lname,
+      RoleType? roletype,
+      List<String>? expertise,
+      String? phone,
+      String? email,
+      String? address,
+      String? geoLat,
+      String? geoLong,
+      CARegistererType? registererType,
+      String? profileDescription,
+      int? age,
+      String? gender,
+      String? country,
+      String? upiId,
+      String? city}) {
     return Profile(
       id: id ?? this.id,
       userId: userId ?? this.userId,
@@ -115,7 +125,6 @@ class Profile {
       lname: lname ?? this.lname,
       roletype: roletype ?? this.roletype,
       expertise: expertise ?? this.expertise,
-      ratings: ratings ?? this.ratings,
       phone: phone ?? this.phone,
       email: email ?? this.email,
       address: address ?? this.address,
@@ -125,6 +134,9 @@ class Profile {
       profileDescription: profileDescription ?? this.profileDescription,
       age: age ?? this.age,
       gender: gender ?? this.gender,
+      country: country ?? this.country,
+      city: city ?? this.city,
+      upiId: upiId ?? this.upiId,
     );
   }
 
@@ -144,7 +156,6 @@ class Profile {
       lname.hashCode ^
       roletype.hashCode ^
       expertise.hashCode ^
-      ratings.hashCode ^
       phone.hashCode ^
       email.hashCode ^
       address.hashCode ^
@@ -153,5 +164,6 @@ class Profile {
       registererType.hashCode ^
       profileDescription.hashCode ^
       age.hashCode ^
+      upiId.hashCode ^
       gender.hashCode;
 }

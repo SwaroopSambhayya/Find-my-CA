@@ -1,5 +1,6 @@
 import 'package:find_my_ca/features/auth/register/providers/registration_provider.dart';
 import 'package:find_my_ca/shared/const.dart';
+import 'package:find_my_ca/shared/enums.dart';
 import 'package:find_my_ca/shared/models/profile.dart';
 import 'package:find_my_ca/shared/utils.dart';
 import 'package:flutter/material.dart';

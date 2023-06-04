@@ -14,20 +14,18 @@ class Login extends ConsumerStatefulWidget {
 
 class _LoginState extends ConsumerState<Login> {
   late ScrollController _scrollController;
-  late TextEditingController userNamecontroller;
   bool showPassword = false;
+  String username = "";
 
   @override
   void initState() {
     _scrollController = ScrollController();
-    userNamecontroller = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    userNamecontroller.dispose();
     super.dispose();
   }
 
@@ -58,9 +56,12 @@ class _LoginState extends ConsumerState<Login> {
               Column(
                 children: [
                   TextFormField(
-                    controller: userNamecontroller,
                     onTap: () => scrollToLast(),
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      setState(() {
+                        username = value;
+                      });
+                    },
                     validator: emptyValidators,
                     style: const TextStyle(fontFamily: "Poppins"),
                     decoration: getInputDecoration(
@@ -89,7 +90,7 @@ class _LoginState extends ConsumerState<Login> {
                     ),
                   ),
                   LoginButton(
-                    email: userNamecontroller.text,
+                    email: username,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

@@ -3,6 +3,7 @@ import 'package:find_my_ca/features/auth/auth.dart';
 import 'package:find_my_ca/features/auth/login/login_provider.dart';
 import 'package:find_my_ca/features/client/home/home.dart';
 import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
+import 'package:find_my_ca/shared/providers/route_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,20 +14,20 @@ final routeProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
   final authListener = ref.watch(authStateListener);
   return GoRouter(
-    initialLocation: Auth.routeLocation,
+    initialLocation: '/login',
     navigatorKey: _key,
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
-        path: Home.routeLocation,
-        name: Home.routeName,
+        path: '/',
+        name: home,
         builder: (context, state) {
           return const Home();
         },
       ),
       GoRoute(
-          path: Auth.routeLocation,
-          name: Auth.routeName,
+          path: login,
+          name: login,
           builder: (context, state) {
             return const Auth();
           }),

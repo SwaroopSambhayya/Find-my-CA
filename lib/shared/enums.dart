@@ -7,3 +7,5 @@ enum Status {
   error,
   sucess,
 }
+
+enum RouteLocation { home, auth, error }

@@ -9,48 +9,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final _key = GlobalKey<NavigatorState>();
-final _shellKey = GlobalKey<NavigatorState>();
+final _routeKey = GlobalKey<NavigatorState>();
+final shellKey = GlobalKey<NavigatorState>();
+final regex = RegExp(r'^[/*]{1,}');
 
 final routeProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
   final authListener = ref.watch(authStateListener);
   return GoRouter(
     initialLocation: '/login',
-    navigatorKey: _key,
+    navigatorKey: _routeKey,
     debugLogDiagnostics: true,
     routes: [
       ShellRoute(
-        navigatorKey: _shellKey,
+        navigatorKey: shellKey,
+        pageBuilder: (context, state, child) {
+          return NoTransitionPage(child: child);
+        },
         routes: [
           GoRoute(
+            parentNavigatorKey: shellKey,
             path: '/',
-            name: home,
-            builder: (context, state) {
-              return const Home();
+            //name: home,
+            pageBuilder: (context, state) {
+              return const NoTransitionPage(child: Home());
             },
           ),
           GoRoute(
-            path: '/home/profile',
-            name: profile,
-            builder: (context, state) {
-              return const Profile();
+            parentNavigatorKey: shellKey,
+            path: '/profile',
+            //name: profile,
+            pageBuilder: (context, state) {
+              print(state.location);
+              return const NoTransitionPage(child: Profile());
             },
           ),
         ],
-        builder: (context, state, child) {
-          return child;
-        },
       ),
       GoRoute(
           path: login,
           name: login,
+          parentNavigatorKey: _routeKey,
           builder: (context, state) {
             return const Auth();
           }),
       GoRoute(
           path: '/error',
           name: 'error',
+          parentNavigatorKey: _routeKey,
           builder: (context, state) {
             return const Scaffold(
               body: Text('ERROR'),
@@ -58,16 +64,17 @@ final routeProvider = Provider<GoRouter>((ref) {
           })
     ],
     redirect: (context, state) {
-      if (authListener.contains('users.*.sessions.*.create')) {
-        return '/';
-      }
-
       if (authState.isLoading) {
         return null;
       }
 
-      if (authState.hasError) {
-        return '/login';
+      if (authState.hasError ||
+          authListener.contains('users.*.sessions.*.delete')) {
+        return login;
+      }
+
+      if (state.location != login && state.location != '/') {
+        return state.location;
       }
       // ignore: unnecessary_type_check
       if (authState is AsyncValue<User?>) {

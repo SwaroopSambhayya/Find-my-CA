@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  context.go('/home/profile');
+                  context.go('/$profile');
                 },
                 icon: const Icon(Icons.person))
           ],

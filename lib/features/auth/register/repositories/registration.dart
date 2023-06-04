@@ -1,9 +1,17 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:find_my_ca/shared/models/profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
+import 'package:uuid/uuid.dart';
 
 class Registration extends StateNotifier<Profile> {
-  Registration() : super(const Profile());
+  Registration() : super(const Profile()) {
+    init();
+  }
+
+  init() {
+    state = state.copyWith(id: ID.custom(const Uuid().v1()));
+  }
 
   changeRegistrationState(Profile profile) {
     state = profile;

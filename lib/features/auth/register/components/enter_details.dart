@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_my_ca/features/auth/providers/password_provider.dart';
 import 'package:find_my_ca/features/auth/register/components/expertise_card.dart';
 import 'package:find_my_ca/features/auth/register/providers/form_state_provider.dart';
 import 'package:find_my_ca/features/auth/register/providers/registration_provider.dart';
 import 'package:find_my_ca/features/auth/register/utils.dart';
+import 'package:find_my_ca/shared/components/image_picker/image_picker_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:find_my_ca/shared/const.dart';
 import 'package:find_my_ca/shared/enums.dart';
 import 'package:find_my_ca/shared/providers/location_provider.dart';
 import 'package:find_my_ca/shared/utils.dart';
@@ -137,9 +141,24 @@ class _CommonFormState extends ConsumerState<CommonForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // DisplayPictureRounded()
-        const CircleAvatar(
-          radius: 40,
+        Stack(
+          alignment: Alignment.bottomRight,
+          children: <Widget>[
+            CircleAvatar(
+              radius: 50,
+              child: CachedNetworkImage(
+                imageUrl:
+                    "$appWriteBaseURl/storage/buckets/$profilePicBucketId/files/${ref.read(registrationProvider).id}/view",
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(
+                  Icons.person,
+                  size: 32,
+                ),
+              ),
+            ),
+            const ImagePickerButton()
+          ],
         ),
         const SizedBox(
           height: 50,
@@ -203,7 +222,6 @@ class _CommonFormState extends ConsumerState<CommonForm> {
             ],
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: TextFormField(
@@ -218,7 +236,6 @@ class _CommonFormState extends ConsumerState<CommonForm> {
                 getInputDecoration(hintText: "Age", iconData: Icons.numbers),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: TextFormField(

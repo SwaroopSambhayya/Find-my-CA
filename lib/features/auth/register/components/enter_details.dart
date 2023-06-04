@@ -5,7 +5,6 @@ import 'package:find_my_ca/features/auth/register/providers/form_state_provider.
 import 'package:find_my_ca/features/auth/register/providers/registration_provider.dart';
 import 'package:find_my_ca/features/auth/register/utils.dart';
 import 'package:find_my_ca/shared/components/image_picker/image_picker_button.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:find_my_ca/shared/const.dart';
 import 'package:find_my_ca/shared/enums.dart';
 import 'package:find_my_ca/shared/providers/location_provider.dart';

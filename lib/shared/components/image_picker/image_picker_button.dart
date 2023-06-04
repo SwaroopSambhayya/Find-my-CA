@@ -4,7 +4,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:find_my_ca/features/auth/register/providers/registration_provider.dart';
 import 'package:find_my_ca/shared/const.dart';
 import 'package:find_my_ca/shared/providers/storage_provider.dart';
-import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -60,12 +59,21 @@ class ImagePickerButtonState extends ConsumerState<ImagePickerButton> {
           },
         );
       },
-      child: Card(
-        elevation: 6,
-        child: Icon(
-          Icons.camera_alt,
-          size: 32,
-          color: primaryColor,
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 10,
+              color: Colors.black.withOpacity(0.1),
+            ),
+          ],
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        child: const Icon(
+          Icons.edit,
+          size: 26,
         ),
       ),
     );

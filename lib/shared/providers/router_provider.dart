@@ -19,12 +19,12 @@ final routeProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
-        path: '/',
-        name: home,
-        builder: (context, state) {
-          return const Home();
-        },
-      ),
+          path: '/',
+          name: home,
+          builder: (context, state) {
+            return const Home();
+          },
+          routes: [GoRoute(path: '/$profile', name: profile)]),
       GoRoute(
           path: login,
           name: login,

@@ -16,6 +16,9 @@ final regex = RegExp(r'^[/*]{1,}');
 final routeProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
   final authListener = ref.watch(authStateListener);
+  authState.whenOrNull(
+    error: (error, stackTrace) => print(error),
+  );
   return GoRouter(
     initialLocation: '/login',
     navigatorKey: _routeKey,
@@ -64,20 +67,30 @@ final routeProvider = Provider<GoRouter>((ref) {
           })
     ],
     redirect: (context, state) {
+      print(state.location);
       if (authState.isLoading) {
+        print('Auth state loading');
         return null;
+      }
+
+      if (state.location != login && state.location != '/') {
+        print('In defined location');
+        return state.location;
+      }
+
+      if (authListener.contains('users.*.sessions.*.create')) {
+        return '/';
       }
 
       if (authState.hasError ||
           authListener.contains('users.*.sessions.*.delete')) {
+        print('Auth state has error');
         return login;
       }
 
-      if (state.location != login && state.location != '/') {
-        return state.location;
-      }
       // ignore: unnecessary_type_check
       if (authState is AsyncValue<User?>) {
+        print('Im going home');
         return '/';
       }
 

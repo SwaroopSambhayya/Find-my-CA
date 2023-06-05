@@ -22,9 +22,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp.router(
       theme: lightThemeData,
       debugShowCheckedModeBanner: false,
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
-      routeInformationProvider: router.routeInformationProvider,
+      routerConfig: router,
     );
   }
 }

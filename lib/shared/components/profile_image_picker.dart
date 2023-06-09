@@ -11,7 +11,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 class ProfileImagePicker extends ConsumerStatefulWidget {
-  const ProfileImagePicker({super.key});
+  final bool loadImageInitially;
+  final String? userId;
+  const ProfileImagePicker(
+      {super.key, this.loadImageInitially = false, this.userId});
 
   @override
   ProfileImagePickerState createState() => ProfileImagePickerState();
@@ -24,11 +27,13 @@ class ProfileImagePickerState extends ConsumerState<ProfileImagePicker> {
   @override
   void initState() {
     super.initState();
-    imageUrl = getImageUrl();
+    if (widget.loadImageInitially) {
+      imageUrl = getImageUrl();
+    }
   }
 
   String getImageUrl() {
-    final userId = ref.read(registrationProvider).id;
+    final userId = widget.userId ?? ref.read(registrationProvider).id;
     final imageUrl =
         "$appWriteBaseURl/storage/buckets/$profilePicBucketId/files/$userId/preview?project=$projectID";
     return imageUrl;
@@ -45,6 +50,7 @@ class ProfileImagePickerState extends ConsumerState<ProfileImagePicker> {
 
   @override
   Widget build(BuildContext context) {
+    print(imageUrl);
     return Stack(
       alignment: Alignment.bottomRight,
       children: <Widget>[

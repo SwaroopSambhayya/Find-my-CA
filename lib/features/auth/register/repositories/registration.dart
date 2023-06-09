@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:find_my_ca/shared/enums.dart';
 import 'package:find_my_ca/shared/models/profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
@@ -15,6 +16,22 @@ class Registration extends StateNotifier<Profile> {
 
   changeRegistrationState(Profile profile) {
     state = profile;
+  }
+
+  updateUserId(String userId) {
+    state = state.copyWith(userId: userId);
+  }
+
+  updateRoleType(RoleType roletype) {
+    state = state.copyWith(roletype: roletype);
+  }
+
+  updateRegType(CARegistererType registererType) {
+    state = state.copyWith(registererType: registererType);
+  }
+
+  updateId(String id) {
+    state = state.copyWith(id: id);
   }
 
   changeExpertise(List<String> expertise) {
@@ -39,6 +56,10 @@ class Registration extends StateNotifier<Profile> {
 
   changeAge(int age) {
     state = state.copyWith(age: age);
+  }
+
+  changeDescription(String description) {
+    state = state.copyWith(profileDescription: description);
   }
 
   changeAddress(String address) {

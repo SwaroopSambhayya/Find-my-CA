@@ -3,6 +3,7 @@ import 'package:find_my_ca/features/auth/auth.dart';
 import 'package:find_my_ca/features/auth/login/login_provider.dart';
 import 'package:find_my_ca/features/client/home/home.dart';
 import 'package:find_my_ca/features/profile/profile.dart';
+import 'package:find_my_ca/features/splash.dart';
 import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
 import 'package:find_my_ca/shared/providers/route_const.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ final routeProvider = Provider<GoRouter>((ref) {
     error: (error, stackTrace) => print(error),
   );
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: splash,
     navigatorKey: _routeKey,
     debugLogDiagnostics: true,
     routes: [
@@ -57,6 +58,13 @@ final routeProvider = Provider<GoRouter>((ref) {
             return const Auth();
           }),
       GoRoute(
+          path: splash,
+          name: splash,
+          parentNavigatorKey: _routeKey,
+          builder: (context, state) {
+            return const SplashScreen();
+          }),
+      GoRoute(
           path: '/error',
           name: 'error',
           parentNavigatorKey: _routeKey,
@@ -70,10 +78,12 @@ final routeProvider = Provider<GoRouter>((ref) {
       print(state.location);
       if (authState.isLoading) {
         print('Auth state loading');
-        return null;
+        return splash;
       }
 
-      if (state.location != login && state.location != '/') {
+      if (state.location != login &&
+          state.location != '/' &&
+          state.location != splash) {
         print('In defined location');
         return state.location;
       }

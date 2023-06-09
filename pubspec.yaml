@@ -29,22 +29,23 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   appwrite: ^9.0.0
+  cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.2
   dotted_border: ^2.0.0+3
+  firebase_core: ^2.13.1
   flutter:
     sdk: flutter
   flutter_onboarding_slider: ^1.0.9
   flutter_riverpod: ^2.3.6
   go_router: ^7.1.1
   google_geocoding_api: ^1.3.0
+  image_picker: ^0.8.7+5
   location:
     git:
       url: https://github.com/781flyingdutchman/flutterlocation.git
       ref: V4
       path: packages/location
   uuid: ^3.0.7
-  image_picker: ^0.8.7+5
-  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_lints: ^2.0.0

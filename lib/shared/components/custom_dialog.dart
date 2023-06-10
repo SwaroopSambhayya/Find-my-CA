@@ -31,9 +31,11 @@ class CustomDialog extends StatelessWidget {
             size: 80,
           ),
         if (status == Status.loading)
-          Container(
-              margin: const EdgeInsets.all(20),
-              child: const CircularProgressIndicator()),
+          Center(
+            child: Container(
+                margin: const EdgeInsets.all(20),
+                child: const CircularProgressIndicator()),
+          ),
         SizedBox(
           height: 30,
           width: MediaQuery.of(context).size.width * 0.8,

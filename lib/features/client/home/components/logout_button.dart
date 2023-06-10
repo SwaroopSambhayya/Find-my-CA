@@ -36,9 +36,10 @@ class LogoutButton extends ConsumerWidget {
       );
     });
     return IconButton(
-        onPressed: () {
-          ref.read(loginProvider.notifier).logoutUser();
-        },
-        icon: const Icon(Icons.logout_outlined));
+      onPressed: () {
+        ref.read(loginProvider.notifier).logoutUser();
+      },
+      icon: const Text("Logout"),
+    );
   }
 }

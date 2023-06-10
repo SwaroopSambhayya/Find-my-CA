@@ -29,4 +29,17 @@ class RegistrationAuth extends StateNotifier<AsyncValue<dynamic>> {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
+
+  Future<void> editProfile(profile) async {
+    state = const AsyncValue.loading();
+    try {
+      final updatedProfile =
+          await updateProfile(ref.read(databaseProvider), profile);
+      state = AsyncValue.data(updatedProfile);
+      Future.delayed(const Duration(seconds: 1),
+          () => ref.read(registrationProvider.notifier).reset());
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
 }

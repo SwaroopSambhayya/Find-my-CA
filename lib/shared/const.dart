@@ -23,6 +23,7 @@ String iosLocationMessage =
     "Go to Settings -> Privacy And Security -> Location Services -> FindyMyCA -> Select option while using app";
 String androidLocationMessage =
     "Go to Settings -> Search Manage Apps -> FindMyCA -> App permissions";
+String uploadingImageMessage = "Uploading...";
 
 String appWriteBaseURl = 'https://cloud.appwrite.io/v1';
 

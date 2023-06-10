@@ -1,50 +1,104 @@
-import 'package:find_my_ca/features/auth/providers/password_provider.dart';
+// ignore_for_file: unused_field
 import 'package:find_my_ca/features/auth/register/components/expertise_card.dart';
 import 'package:find_my_ca/features/auth/register/providers/form_state_provider.dart';
 import 'package:find_my_ca/features/auth/register/providers/registration_provider.dart';
 import 'package:find_my_ca/features/auth/register/utils.dart';
 import 'package:find_my_ca/shared/components/profile_image_picker.dart';
+
 import 'package:find_my_ca/shared/enums.dart';
 import 'package:find_my_ca/shared/providers/location_provider.dart';
 import 'package:find_my_ca/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:find_my_ca/shared/models/profile.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 
-class EnterDetails extends ConsumerWidget {
-  const EnterDetails({super.key});
+class EditProfile extends ConsumerStatefulWidget {
+  static String get routeName => '/editProfile';
+  static String get routeLocation => 'editProfile';
+  final Profile profile;
+
+  const EditProfile({
+    super.key,
+    required this.profile,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(registrationProvider.select((value) => value.roletype)) ==
-            RoleType.ca
-        ? const CAForm()
-        : const ClientForm();
+  ConsumerState<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends ConsumerState<EditProfile> {
+  late ScrollController _scrollController;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final role = widget.profile.roletype;
+    final buildWidget = role == RoleType.ca
+        ? CAEditForm(profile: widget.profile)
+        : ClientEditForm(profile: widget.profile);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Edit profile"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: _scrollController,
+        child: Container(
+          margin: const EdgeInsets.all(14),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              buildWidget,
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () {
+                  final editedProfile = ref.read(registrationProvider);
+                  ref
+                      .read(registrationAuthProvider.notifier)
+                      .editProfile(editedProfile);
+                },
+                child: const Text(
+                  "Edit",
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
-class CAForm extends ConsumerStatefulWidget {
-  const CAForm({super.key});
+class CAEditForm extends ConsumerStatefulWidget {
+  final Profile profile;
+  const CAEditForm({super.key, required this.profile});
 
   @override
-  ConsumerState<CAForm> createState() => _CAFormState();
+  ConsumerState<CAEditForm> createState() => _CAEditFormState();
 }
 
-class _CAFormState extends ConsumerState<CAForm> {
+class _CAEditFormState extends ConsumerState<CAEditForm> {
   bool isExpertiseFieldActive = false;
 
   @override
   Widget build(BuildContext context) {
-    List<String> expertises =
-        ref.watch(registrationProvider.select((value) => value.expertise)) ??
-            [];
+    List<String> expertises = widget.profile.expertise ?? [];
+
     List<String> availableExpertises = ref.watch(availableExpertiseProvider);
 
     return Form(
       key: ref.read(formStateProvider),
       child: Column(
         children: [
-          const CommonForm(),
+          CommonEditForm(profile: widget.profile),
           ExpertiseCard(
               availableExpertises: availableExpertises,
               expertises: expertises,
@@ -52,19 +106,7 @@ class _CAFormState extends ConsumerState<CAForm> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
             child: TextFormField(
-              validator: (val) => membershipValidator(
-                  ref.read(registrationProvider).registererType, val),
-              decoration: getInputDecoration(
-                  hintText: ref.read(registrationProvider).registererType ==
-                          CARegistererType.sole
-                      ? "Membership number of 6 digits"
-                      : "Firm Number of 7 digits",
-                  iconData: Icons.numbers),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
-            child: TextFormField(
+              initialValue: widget.profile.upiId,
               validator: upiValidator,
               onChanged: (value) {
                 ref.read(registrationProvider.notifier).changeUPI(value);
@@ -79,16 +121,18 @@ class _CAFormState extends ConsumerState<CAForm> {
   }
 }
 
-class CommonForm extends ConsumerStatefulWidget {
-  const CommonForm({
+class CommonEditForm extends ConsumerStatefulWidget {
+  final Profile profile;
+  const CommonEditForm({
     super.key,
+    required this.profile,
   });
 
   @override
-  ConsumerState<CommonForm> createState() => _CommonFormState();
+  ConsumerState<CommonEditForm> createState() => _CommonEditFormState();
 }
 
-class _CommonFormState extends ConsumerState<CommonForm> {
+class _CommonEditFormState extends ConsumerState<CommonEditForm> {
   late TextEditingController address;
   late TextEditingController country;
   late TextEditingController city;
@@ -98,6 +142,9 @@ class _CommonFormState extends ConsumerState<CommonForm> {
   void initState() {
     initializeControllers();
     super.initState();
+    address.text = widget.profile.address!;
+    country.text = widget.profile.country!;
+    city.text = widget.profile.city!;
   }
 
   initializeControllers() {
@@ -138,7 +185,10 @@ class _CommonFormState extends ConsumerState<CommonForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const ProfileImagePicker(),
+        ProfileImagePicker(
+          loadImageInitially: true,
+          userId: widget.profile.id,
+        ),
         const SizedBox(
           height: 50,
         ),
@@ -147,6 +197,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
           children: [
             Expanded(
               child: TextFormField(
+                initialValue: widget.profile.fname,
                 onChanged: (value) {
                   ref.read(registrationProvider.notifier).changeFname(value);
                 },
@@ -160,6 +211,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
             ),
             Expanded(
               child: TextFormField(
+                initialValue: widget.profile.lname,
                 onChanged: (value) {
                   ref.read(registrationProvider.notifier).changeLname(value);
                 },
@@ -176,6 +228,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
             children: [
               Expanded(
                 child: TextFormField(
+                  initialValue: widget.profile.email,
                   validator: emailValidator,
                   onChanged: (value) {
                     ref.read(registrationProvider.notifier).changeEmail(value);
@@ -189,6 +242,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
               ),
               Expanded(
                 child: TextFormField(
+                  initialValue: widget.profile.phone,
                   validator: phoneValidator,
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
@@ -204,6 +258,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: TextFormField(
+            initialValue: widget.profile.profileDescription,
             keyboardType: TextInputType.text,
             maxLines: 4,
             onChanged: (value) {
@@ -216,6 +271,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: TextFormField(
+            initialValue: widget.profile.age.toString(),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               ref
@@ -230,6 +286,8 @@ class _CommonFormState extends ConsumerState<CommonForm> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0),
           child: TextFormField(
+            //initialValue: widget.profile.address,
+
             controller: address,
             onChanged: (value) {
               ref.read(registrationProvider.notifier).changeAddress(value);
@@ -245,6 +303,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
             children: [
               Expanded(
                 child: TextFormField(
+                  // initialValue: widget.profile.country,
                   controller: country,
                   onChanged: (value) {
                     ref
@@ -261,6 +320,7 @@ class _CommonFormState extends ConsumerState<CommonForm> {
               ),
               Expanded(
                 child: TextFormField(
+                  // initialValue: widget.profile.city,
                   controller: city,
                   onChanged: (value) {
                     ref.read(registrationProvider.notifier).changeCity(value);
@@ -273,38 +333,20 @@ class _CommonFormState extends ConsumerState<CommonForm> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0),
-          child: TextFormField(
-            obscureText: !showPassword,
-            onChanged: (value) {
-              ref.read(passwordProvider.notifier).state = value;
-            },
-            validator: passwordValidator,
-            decoration: getInputDecoration(
-                suffixOnTap: () {
-                  setState(() {
-                    showPassword = !showPassword;
-                  });
-                },
-                hintText: "Create new password",
-                iconData:
-                    showPassword ? Icons.visibility_off : Icons.visibility),
-          ),
-        ),
       ],
     );
   }
 }
 
-class ClientForm extends ConsumerWidget {
-  const ClientForm({super.key});
+class ClientEditForm extends ConsumerWidget {
+  final Profile profile;
+  const ClientEditForm({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Form(
       key: ref.read(formStateProvider),
-      child: const CommonForm(),
+      child: CommonEditForm(profile: profile),
     );
   }
 }

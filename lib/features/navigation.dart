@@ -1,9 +1,11 @@
 import 'package:find_my_ca/features/client/home/home.dart';
+import 'package:find_my_ca/features/profile/profile.dart';
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
-  const Navigation({Key? key}) : super(key: key);
+  final int selectedIndex;
+  const Navigation({Key? key, this.selectedIndex = 0}) : super(key: key);
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -20,15 +22,19 @@ class _NavigationState extends State<Navigation> {
     Center(
       child: Icon(Icons.notifications),
     ),
-    Center(
-      child: Icon(Icons.person),
-    ),
+    UserProfile()
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _selectedIndex = widget.selectedIndex;
+    super.initState();
   }
 
   @override

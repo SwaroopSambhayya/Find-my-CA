@@ -48,7 +48,7 @@ final routeProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             parentNavigatorKey: shellKey,
-            path: '/profile',
+            path: profile,
             pageBuilder: (context, state) {
               print(state.location);
               return const NoTransitionPage(child: UserProfile());

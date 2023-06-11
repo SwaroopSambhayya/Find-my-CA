@@ -1,5 +1,9 @@
+import 'package:find_my_ca/shared/providers/route_const.dart';
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../shared/const.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -17,15 +21,18 @@ class Home extends StatelessWidget {
         centerTitle: true,
         backgroundColor: backgroundColor,
         actions: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Image.network(
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                height: 30,
-                width: 30,
-                fit: BoxFit.fill,
+          GestureDetector(
+            // onTap: () => context.go(profile),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Image.network(
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                  height: 30,
+                  width: 30,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           ),
@@ -38,23 +45,9 @@ class Home extends StatelessWidget {
           children: [
             const Text("Hi, Gunther",
                 style: TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w500)),
-            const Text("Let's Find the best CA to help you",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            Text(homeHeading,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
             const SizedBox(height: 30),
-            // TextField(
-            //   decoration: InputDecoration(
-            //     hintText: "Search CA",
-            //     isDense: true,
-            //     filled: true,
-            //     fillColor: secondaryColor,
-            //     suffixIcon: const Icon(Icons.search, color: Colors.grey, size: 25),
-            //     border:
-            //         OutlineInputBorder(borderSide: BorderSide(color: backgroundColor, width: 1)),
-            //     enabledBorder: OutlineInputBorder(
-            //         borderSide: BorderSide(color: Colors.grey.withOpacity(0.3), width: 1)),
-            //   ),
-            // ),
-            // const SizedBox(height: 30),
             const Text("Categories", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
             const CategoryItems(),
             const Text("Top CA", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
@@ -78,7 +71,7 @@ class CategoryItems extends StatefulWidget {
 class _CategoryItemsState extends State<CategoryItems> {
   int selectedIndex = 0;
 
-  final List<String> _choicesList = ['General', 'Criminal', 'Crime', "Tax Deduction"];
+  // final List<String> _choicesList = ['General', 'Criminal', 'Crime', "Tax Deduction"];
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +80,7 @@ class _CategoryItemsState extends State<CategoryItems> {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: List.generate(
-            _choicesList.length,
+            expertise.length,
             (index) => GestureDetector(
                   onTap: () {
                     setState(() {
@@ -96,33 +89,29 @@ class _CategoryItemsState extends State<CategoryItems> {
                   },
                   child: Row(
                     children: [
-                      Chip(
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(10),
-                        //   side: BorderSide(
-                        //       color: Colors.transparent, width: 0),
-                        // ),
-                        labelPadding: const EdgeInsets.all(3),
-                        padding: const EdgeInsets.all(5),
-                        backgroundColor: getBackgroundColor(index),
-                        label: Row(
-                          children: [
-                            Container(
-                              height: 25,
-                              width: 25,
-                              decoration: BoxDecoration(
-                                  color: backgroundColor, borderRadius: BorderRadius.circular(5)),
-                              child: Icon(Icons.add_business, size: 18, color: getIconColor(index)),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              _choicesList[index],
-                              style: TextStyle(color: getFontColor(index), fontSize: 14),
-                            ),
-                          ],
+                      Card(
+                        color: getBackgroundColor(index),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 25,
+                                width: 25,
+                                decoration: BoxDecoration(
+                                    color: backgroundColor, borderRadius: BorderRadius.circular(5)),
+                                child: Icon(Icons.add_business, size: 18, color: getIconColor(index)),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                expertise[index],
+                                style: TextStyle(color: getFontColor(index), fontSize: 14),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 10),
                     ],
                   ),
                 )),
@@ -187,7 +176,7 @@ class CaListItem extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 2),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
-                              color: Colors.greenAccent,
+                              color: primaryColor.withOpacity(0.5),
                             ),
                             child: const Text("General", style: TextStyle(fontSize: 12)),
                           )

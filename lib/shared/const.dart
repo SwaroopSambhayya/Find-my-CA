@@ -5,16 +5,16 @@ List<String> caTypes = [
 ];
 
 List<String> expertise = [
-  "Certification",
+  "General",
   "Networth certificate",
   "Valuation certificate",
   "Financial statements",
   "Audit reports",
   "Internal audit",
-  "Management consulting",
-  "Legal consultancy",
-  "Indirect tax consultancy",
-  "Direct tax consultancy"
+  "Management",
+  "Legal",
+  "Indirect tax",
+  "Direct tax"
 ];
 
 String locationMessage =
@@ -24,6 +24,7 @@ String iosLocationMessage =
 String androidLocationMessage =
     "Go to Settings -> Search Manage Apps -> FindMyCA -> App permissions";
 String uploadingImageMessage = "Uploading...";
+String homeHeading = "Let's Find the best CA to help you";
 
 String appWriteBaseURl = 'https://cloud.appwrite.io/v1';
 

@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/navigation.dart';
+
 final _routeKey = GlobalKey<NavigatorState>();
 final shellKey = GlobalKey<NavigatorState>();
 final subRouteKey = GlobalKey<NavigatorState>();
@@ -38,14 +40,15 @@ final routeProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             parentNavigatorKey: shellKey,
-            path: '/',
+            path: home,
+            //name: home,
             pageBuilder: (context, state) {
-              return const NoTransitionPage(child: Home());
+              return const NoTransitionPage(child: Navigation());
             },
           ),
           GoRoute(
             parentNavigatorKey: shellKey,
-            path: '/profile',
+            path: profile,
             pageBuilder: (context, state) {
               print(state.location);
               return const NoTransitionPage(child: UserProfile());
@@ -102,7 +105,8 @@ final routeProvider = Provider<GoRouter>((ref) {
       }
 
       if (authListener.contains('users.*.sessions.*.create')) {
-        return '/';
+        return home;
+        // return '/';
       }
 
       if (authState.hasError ||

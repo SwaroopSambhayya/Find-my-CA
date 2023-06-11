@@ -21,6 +21,7 @@ ThemeData lightThemeData = ThemeData(
     ),
     cardTheme: CardTheme(
       color: secondaryColor,
+      surfaceTintColor: secondaryColor
     ),
     dialogBackgroundColor: backgroundColor,
     canvasColor: backgroundColor,

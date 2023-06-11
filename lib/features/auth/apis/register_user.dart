@@ -10,10 +10,10 @@ Future<User> registerNewUser(
     required Profile profile,
     required Databases database}) async {
   User user = await account.create(
-    userId: ID.unique(),
-    email: email,
-    password: password,
-  );
+      userId: ID.unique(),
+      email: email,
+      password: password,
+      name: "${profile.fname!} ${profile.lname!}");
   profile = profile.copyWith(userId: user.$id);
   await createProfile(database, profile);
   return user;

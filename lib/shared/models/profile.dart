@@ -23,6 +23,7 @@ class Profile {
   final String? profileDescription;
   final int? age;
   final String? gender;
+  final String? token;
 
   const Profile({
     this.id,
@@ -43,6 +44,7 @@ class Profile {
     this.country,
     this.city,
     this.gender,
+    this.token,
   });
 
   factory Profile.fromMap(Map<String, dynamic> data) {
@@ -81,6 +83,7 @@ class Profile {
       upiId: data['upiId'] as String?,
       city: data['city'] as String?,
       gender: data['gender'] as String?,
+      token: data['token'] as String?,
     );
   }
 
@@ -102,7 +105,8 @@ class Profile {
         'gender': gender ?? "",
         'country': country,
         'city': city,
-        'upiId': upiId
+        'upiId': upiId,
+        'token': token,
       };
 
   /// `dart:convert`
@@ -135,6 +139,7 @@ class Profile {
       String? gender,
       String? country,
       String? upiId,
+      String? token,
       String? city}) {
     return Profile(
       id: id ?? this.id,
@@ -155,6 +160,7 @@ class Profile {
       country: country ?? this.country,
       city: city ?? this.city,
       upiId: upiId ?? this.upiId,
+      token: token ?? this.token,
     );
   }
 

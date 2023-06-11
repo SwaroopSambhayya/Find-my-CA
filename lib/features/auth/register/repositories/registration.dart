@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:find_my_ca/shared/enums.dart';
 import 'package:find_my_ca/shared/models/profile.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
 import 'package:uuid/uuid.dart';
@@ -10,8 +11,11 @@ class Registration extends StateNotifier<Profile> {
     init();
   }
 
-  init() {
+  init() async {
     state = state.copyWith(id: ID.custom(const Uuid().v1()));
+    final token = await FirebaseMessaging.instance.getToken();
+    print(token);
+    state = state.copyWith(token: token);
   }
 
   changeRegistrationState(Profile profile) {

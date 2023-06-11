@@ -23,6 +23,15 @@ Future<void> createProfile(Databases database, Profile profile) async {
   await database.createDocument(
       databaseId: databaseId,
       collectionId: profileCollectionID,
-      documentId: profile.id!,
+      documentId: profile.userId!,
       data: profile.toMap());
+}
+
+Future<Profile> updateProfile(Databases database, Profile profile) async {
+  await database.updateDocument(
+      databaseId: databaseId,
+      collectionId: profileCollectionID,
+      documentId: profile.userId!,
+      data: profile.toMap());
+  return profile;
 }

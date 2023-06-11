@@ -19,6 +19,7 @@ InputDecoration getInputDecoration(
     filled: true,
     fillColor: Colors.white,
     hintText: hintText,
+    alignLabelWithHint: true,
     hintStyle: TextStyle(fontFamily: "Poppins", color: Colors.grey[350]),
     suffixIcon: InkWell(
       onTap: suffixOnTap,
@@ -37,7 +38,8 @@ bool getStepActionStatus(int step, RoleType roleType,
     case 0:
       return roleType == RoleType.none;
     case 1:
-      return registererType == CARegistererType.none;
+      return roleType != RoleType.client &&
+          registererType == CARegistererType.none;
     default:
       return false;
   }
@@ -99,4 +101,14 @@ String getErrorBasedOnType(String? type) {
       return invalidCredential;
   }
   return connectivityIssue;
+}
+
+double getDoubleValue(dynamic value) {
+  final text = value?.toString() ?? "";
+  return text.isEmpty ? 0.0 : double.parse(text);
+}
+
+int getIntValue(dynamic value) {
+  final text = value?.toString() ?? "";
+  return text.isEmpty ? 0 : int.parse(text);
 }

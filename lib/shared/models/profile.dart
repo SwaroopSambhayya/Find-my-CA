@@ -45,26 +45,44 @@ class Profile {
     this.gender,
   });
 
-  factory Profile.fromMap(Map<String, dynamic> data) => Profile(
-        id: data['id'] as String?,
-        userId: data['userId'] as String?,
-        fname: data['fname'] as String?,
-        lname: data['lname'] as String?,
-        roletype: data['roletype'] as RoleType,
-        expertise: data['expertise'] as List<String>?,
-        phone: data['phone'] as String?,
-        email: data['email'] as String?,
-        address: data['address'] as String?,
-        geoLat: data['geoLat'] as String?,
-        geoLong: data['geoLong'] as String?,
-        registererType: data['registererType'] as CARegistererType,
-        profileDescription: data['profileDescription'] as String?,
-        age: data['age'] as int?,
-        country: data['country'] as String?,
-        upiId: data['upiId'] as String?,
-        city: data['city'] as String?,
-        gender: data['gender'] as String?,
-      );
+  factory Profile.fromMap(Map<String, dynamic> data) {
+    final roleType = data['roletype'] == null
+        ? RoleType.none
+        : RoleType.values
+            .where((element) => describeEnum(element) == data['roletype'])
+            .first;
+
+    final registererType = data['registererType'] == null
+        ? CARegistererType.none
+        : CARegistererType.values
+            .where((element) => describeEnum(element) == data['registererType'])
+            .first;
+
+    final expertise = data['expertise'] == null
+        ? null
+        : List<String>.from(data['expertise'] as List<dynamic>);
+
+    return Profile(
+      id: data['id'] as String?,
+      userId: data['userId'] as String?,
+      fname: data['fname'] as String?,
+      lname: data['lname'] as String?,
+      roletype: roleType,
+      expertise: expertise,
+      phone: data['phone'] as String?,
+      email: data['email'] as String?,
+      address: data['address'] as String?,
+      geoLat: data['geoLat'] as String?,
+      geoLong: data['geoLong'] as String?,
+      registererType: registererType,
+      profileDescription: data['profileDescription'] as String?,
+      age: data['age'] as int?,
+      country: data['country'] as String?,
+      upiId: data['upiId'] as String?,
+      city: data['city'] as String?,
+      gender: data['gender'] as String?,
+    );
+  }
 
   Map<String, dynamic> toMap() => {
         'id': id,
@@ -72,7 +90,7 @@ class Profile {
         'fname': fname,
         'lname': lname,
         'roletype': describeEnum(roletype),
-        'expertise': expertise,
+        'expertise': expertise ?? [],
         'phone': phone,
         'email': email,
         'address': address,

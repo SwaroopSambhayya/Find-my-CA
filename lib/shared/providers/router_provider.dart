@@ -1,9 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'package:appwrite/models.dart';
 import 'package:find_my_ca/features/auth/auth.dart';
 import 'package:find_my_ca/features/auth/login/login_provider.dart';
 import 'package:find_my_ca/features/client/home/home.dart';
+import 'package:find_my_ca/features/profile/edit_profile.dart';
 import 'package:find_my_ca/features/profile/profile.dart';
 import 'package:find_my_ca/features/splash.dart';
+import 'package:find_my_ca/shared/models/profile.dart';
 import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
 import 'package:find_my_ca/shared/providers/route_const.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +18,7 @@ import '../../features/navigation.dart';
 
 final _routeKey = GlobalKey<NavigatorState>();
 final shellKey = GlobalKey<NavigatorState>();
+final subRouteKey = GlobalKey<NavigatorState>();
 final regex = RegExp(r'^[/*]{1,}');
 
 final routeProvider = Provider<GoRouter>((ref) {
@@ -44,11 +49,20 @@ final routeProvider = Provider<GoRouter>((ref) {
           GoRoute(
             parentNavigatorKey: shellKey,
             path: '/profile',
-            //name: profile,
             pageBuilder: (context, state) {
               print(state.location);
-              return const NoTransitionPage(child: Profile());
+              return const NoTransitionPage(child: UserProfile());
             },
+            routes: [
+              GoRoute(
+                path: 'editProfile',
+                builder: (context, state) {
+                  final profile = state.extra as Profile;
+                  print(state.location);
+                  return EditProfile(profile: profile);
+                },
+              ),
+            ],
           ),
         ],
       ),

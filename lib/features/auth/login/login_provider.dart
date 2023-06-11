@@ -16,7 +16,7 @@ final authStateProvider = FutureProvider<User?>((ref) async {
   // ignore: unnecessary_type_check
   if (user is User) {
     ref.read(authStateListener.notifier).state = ['users.*.sessions.*.create'];
-    ref.read(userProvider.notifier).state = user;
+    ref.read(userIdProvider.notifier).state = user.$id;
   }
   return user;
 });

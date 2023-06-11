@@ -53,6 +53,7 @@
 	<string>Used to pick photo from your photo library</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to take photo</string>
-
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 </dict>
 </plist>

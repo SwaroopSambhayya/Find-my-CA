@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:find_my_ca/features/auth/apis/login.dart';
 import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
+import 'package:find_my_ca/shared/providers/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginAuth extends StateNotifier<AsyncValue<dynamic>> {
@@ -17,6 +18,7 @@ class LoginAuth extends StateNotifier<AsyncValue<dynamic>> {
       ref.read(authStateListener.notifier).state = [
         'users.*.sessions.*.create'
       ];
+      ref.read(userIdProvider.notifier).state = session.userId;
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }

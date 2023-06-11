@@ -121,17 +121,17 @@ class _UserProfileState extends ConsumerState<UserProfile> {
                                   Radius.circular(8),
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl:
-                                      "$appWriteBaseURl/storage/buckets/$profilePicBucketId/files/${userProfile.id}/preview?project=$projectID",
-                                  fit: BoxFit.fill,
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      const Center(
-                                    child: Icon(Icons.error),
-                                  ),
-                                ),
+                                    imageUrl:
+                                        "$appWriteBaseURl/storage/buckets/$profilePicBucketId/files/${userProfile.id}/preview?project=$projectID",
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                    errorWidget: (context, url, error) {
+                                      return const Center(
+                                        child: Icon(Icons.error),
+                                      );
+                                    }),
                               ),
                             ),
                             Align(

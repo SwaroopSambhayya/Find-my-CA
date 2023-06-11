@@ -59,32 +59,6 @@ class _NavigationState extends State<Navigation> {
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   elevation: 50,
-      //   currentIndex: _selectedIndex,
-      //   onTap: _onItemTapped,
-      //   backgroundColor: Colors.white,
-      //   showSelectedLabels: false,
-      //   showUnselectedLabels: false,
-      //   items: <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(getIcons(0), color: Colors.grey),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(getIcons(1), color: Colors.grey),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(getIcons(2), color: Colors.grey),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(getIcons(3), color: Colors.grey),
-      //       label: '',
-      //     ),
-      //   ],
-      // ),
     );
   }
 

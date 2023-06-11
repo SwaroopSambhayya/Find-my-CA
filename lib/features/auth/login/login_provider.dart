@@ -3,6 +3,7 @@ import 'package:appwrite/models.dart';
 import 'package:find_my_ca/features/auth/login/login_repositoty.dart';
 import 'package:find_my_ca/shared/providers/account_provider.dart';
 import 'package:find_my_ca/shared/providers/appwrite_realtime.dart';
+import 'package:find_my_ca/shared/providers/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final loginProvider = StateNotifierProvider<LoginAuth, AsyncValue<void>>((ref) {
@@ -15,6 +16,7 @@ final authStateProvider = FutureProvider<User?>((ref) async {
   // ignore: unnecessary_type_check
   if (user is User) {
     ref.read(authStateListener.notifier).state = ['users.*.sessions.*.create'];
+    ref.read(userProvider.notifier).state = user;
   }
   return user;
 });

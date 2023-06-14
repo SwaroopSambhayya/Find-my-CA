@@ -50,6 +50,7 @@ class Notifications extends ConsumerWidget {
             );
           },
           error: (error, stackTrace) {
+            print(error);
             return const Center(
               child: Text("Could not load notifications, something went wrong"),
             );

@@ -11,20 +11,24 @@ class FallBackPicture extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(initialProvider(name)).when(
-        data: (data) => ClipRRect(
-            borderRadius: BorderRadius.circular(
-                (MediaQuery.of(context).size.width * 0.2)),
-            child: Image.memory(
-              data,
-              fit: BoxFit.cover,
-            )),
-        error: (obj, err) => const Icon(Icons.person),
-        loading: () => Shimmer.fromColors(
-              highlightColor: backgroundColor,
-              baseColor: Colors.grey,
-              child: const CircleAvatar(
-                backgroundColor: Colors.transparent,
+          data: (data) => ClipRRect(
+              borderRadius: BorderRadius.circular(
+                  (MediaQuery.of(context).size.width * 0.2)),
+              child: Image.memory(
+                data,
+                fit: BoxFit.cover,
+              )),
+          error: (obj, err) => const Icon(Icons.person),
+          loading: () => Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey,
               ),
-            ));
+            ),
+          ),
+        );
   }
 }

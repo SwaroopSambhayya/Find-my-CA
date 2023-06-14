@@ -1,8 +1,10 @@
 import 'package:find_my_ca/features/client/home/home.dart';
+import 'package:find_my_ca/features/notifications/notifications.dart';
 import 'package:find_my_ca/features/profile/profile.dart';
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class Navigation extends ConsumerStatefulWidget {
   final int selectedIndex;
   const Navigation({super.key, this.selectedIndex = 0});
@@ -19,9 +21,7 @@ class _NavigationState extends ConsumerState<Navigation> {
     Center(
       child: Icon(Icons.chat_bubble_outlined),
     ),
-    Center(
-      child: Icon(Icons.notifications),
-    ),
+    Notifications(),
     UserProfile()
   ];
 
@@ -76,9 +76,13 @@ class _NavigationState extends ConsumerState<Navigation> {
       case 0:
         return _selectedIndex == index ? Icons.home : Icons.home_outlined;
       case 1:
-        return _selectedIndex == index ? Icons.messenger : Icons.messenger_outline;
+        return _selectedIndex == index
+            ? Icons.messenger
+            : Icons.messenger_outline;
       case 2:
-        return _selectedIndex == index ? Icons.notifications : Icons.notifications_outlined;
+        return _selectedIndex == index
+            ? Icons.notifications
+            : Icons.notifications_outlined;
       case 3:
         return _selectedIndex == index ? Icons.person : Icons.person_outlined;
     }

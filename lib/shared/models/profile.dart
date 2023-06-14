@@ -109,6 +109,10 @@ class Profile {
         'token': token,
       };
 
+  String getFullName() {
+    return '$fname $lname';
+  }
+
   /// `dart:convert`
   ///
   /// Parses the string and returns the resulting Json object as [Profile].

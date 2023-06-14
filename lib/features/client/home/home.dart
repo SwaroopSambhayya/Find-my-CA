@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:find_my_ca/features/client/home/providers/provider.dart';
 import 'package:find_my_ca/features/profile/providers/profile_provider.dart';
+import 'package:find_my_ca/shared/components/fall_back_picture.dart.dart';
 import 'package:find_my_ca/shared/services.dart';
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/const.dart';
@@ -29,44 +32,56 @@ class _HomeState extends ConsumerState<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          children: [
-            ref.watch(profileProvider).when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Text('Error: $err'),
-                data: (data) {
-                  return Text("Hi, ${data?.fname ?? ''}",
-                      style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500));
-                }),
-            Text(homeHeading,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 24),
-            const Text("Select Categories",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            const CategoryItems(),
-            const SizedBox(height: 8),
-            const Text("Top CA",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 5),
-            ref.watch(currentHomeProvider).when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => Text('Error: $err'),
-                  data: (data) {
-                    return Column(
-                      children: List.generate(
-                        data.length,
-                        (i) => CaListItem(profileData: data, index: i),
-                      ),
-                    );
-                  },
-                )
-          ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                ref.watch(profileProvider).when(
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (err, stack) => Text('Error: $err'),
+                    data: (data) {
+                      return Text("Hi, ${data?.fname ?? ''}",
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500));
+                    }),
+                Text(homeHeading,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w500)),
+                const SizedBox(height: 24),
+                const Text("Select Categories",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                const CategoryItems(),
+                const SizedBox(height: 8),
+                const Text("Top CA",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                const SizedBox(height: 10),
+                ref.watch(currentHomeProvider).when(
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (err, stack) => Text('Error: $err'),
+                      data: (data) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) =>
+                              CaListItem(profileData: data[index]),
+                          itemCount: data.length,
+                        );
+                      },
+                    )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -146,126 +161,123 @@ class _CategoryItemsState extends State<CategoryItems> {
 }
 
 class CaListItem extends StatelessWidget {
-  final List<Profile>? profileData;
-  final int? index;
+  final Profile profileData;
 
-  const CaListItem({Key? key, this.profileData, this.index}) : super(key: key);
+  const CaListItem({Key? key, required this.profileData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Path customPath = Path()
+      ..moveTo(0, 0)
+      ..lineTo(MediaQuery.of(context).size.width - 60, 0);
+
     final imageUrl =
-        "$appWriteBaseURl/storage/buckets/$profilePicBucketId/files/${profileData?[index!].id}/preview?project=$projectID";
+        "$appWriteBaseURl/storage/buckets/$profilePicBucketId/files/${profileData.id}/preview?project=$projectID";
 
     return Container(
-      height: 132,
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => const SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Center(
-                            child: Icon(
-                          Icons.person,
-                          size: 42,
-                        ))),
-                  ),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardTheme.color,
+          borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ListTile(
+            titleAlignment: ListTileTitleAlignment.bottom,
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(55),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                width: 55,
+                height: 55,
+                errorWidget: (context, url, error) => FallBackPicture(
+                  name: '${profileData.fname} ${profileData.lname}',
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            " ${profileData?[index!].fname} ${profileData?[index!].lname}",
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(profileData.getFullName()),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.location_on,
+                    size: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text(profileData.city ?? ""),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15).copyWith(top: 24),
+            child: DottedBorder(
+              customPath: (p0) => customPath,
+              borderType: BorderType.RRect,
+              dashPattern: const [2.5, 4],
+              strokeWidth: 1.5,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        RatingBar.builder(
+                          initialRating: 3,
+                          itemSize: 15,
+                          ignoreGestures: true,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 2.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.star_rate,
-                                  color: primaryColor, size: 20),
-                              const SizedBox(width: 2),
-                              //TODO:
-                              const Text("4.8",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    // color: Colors.grey,
-                                  ))
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            size: 16,
-                            color: Colors.grey[500]!,
-                          ),
-                          Text(
-                            profileData?[index!].city ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[500]!,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        profileData?[index!].profileDescription ?? '',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          // color: Colors.grey,
+                          onRatingUpdate: (rating) {
+                            print(rating);
+                          },
+                        ),
+                        const Text(
+                          "3.5",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 1,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
-                      /* const Row(
-                        children: [
-                          Icon(Icons.star_rate, color: Colors.yellow, size: 16),
-                          SizedBox(width: 5),
-                          Text("4.8",
-                              style:
-                                  TextStyle(fontSize: 10, color: Colors.grey))
-                        ],
-                      ) */
-                    ],
-                  ),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.open_in_new,
+                        size: 16,
+                      ),
+                      label: const Text(
+                        "View Bio",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

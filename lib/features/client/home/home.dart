@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:find_my_ca/features/client/home/providers/provider.dart';
 import 'package:find_my_ca/features/profile/providers/profile_provider.dart';
-import 'package:find_my_ca/shared/components/fall_back_picture.dart.dart';
+import 'package:find_my_ca/shared/components/fall_back_picture.dart';
 import 'package:find_my_ca/shared/services.dart';
 import 'package:find_my_ca/shared/theme.dart';
 import 'package:flutter/material.dart';
@@ -55,12 +55,12 @@ class _HomeState extends ConsumerState<Home> {
                 Text(homeHeading,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w500)),
-                const SizedBox(height: 24),
+                const SizedBox(height: 50),
                 const Text("Select Categories",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                 const CategoryItems(),
-                const SizedBox(height: 8),
+                const SizedBox(height: 30),
                 const Text("Top CA",
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),

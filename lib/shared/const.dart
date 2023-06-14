@@ -51,3 +51,5 @@ String rateLimitExceeded = 'Oops! sorry for inconvinience we will be back soon';
 String loginSucess = 'Login Sucessful';
 
 String logoutSuccess = 'Logout Successful';
+
+const notificationCollectionId = "64899a4f296ac881844b";
